@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - Vinus Beauty</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .product-detail {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+        
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        
+        .product-images {
+            position: sticky;
+            top: 100px;
+        }
+        
+        .main-image {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .thumbnail-images {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+        
+        .thumbnail.active,
+        .thumbnail:hover {
+            border-color: #e91e63;
+        }
+        
+        .product-info {
+            padding: 20px 0;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: #e91e63;
+            text-decoration: none;
+        }
+        
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stars {
+            color: #ffd700;
+        }
+        
+        .rating-text {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .product-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .product-options {
+            margin-bottom: 30px;
+        }
+        
+        .option-group {
+            margin-bottom: 20px;
+        }
+        
+        .option-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .color-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .color-option.active,
+        .color-option:hover {
+            border-color: #333;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .quantity-btn {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .quantity-input {
+            border: none;
+            text-align: center;
+            width: 60px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .add-to-cart {
+            flex: 1;
+            background: linear-gradient(135deg, #e91e63, #ad1457);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            transform: translateY(-2px);
+        }
+        
+        .wishlist-btn {
+            background: white;
+            border: 2px solid #e91e63;
+            color: #e91e63;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .wishlist-btn:hover {
+            background: #e91e63;
+            color: white;
+        }
+        
+        .product-features {
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-list li i {
+            color: #e91e63;
+        }
+        
+        .tabs {
+            margin-top: 60px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 30px;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            color: #e91e63;
+            border-bottom-color: #e91e63;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .ingredients-list {
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .review {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+        
+        .review:last-child {
+            border-bottom: none;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .reviewer-name {
+            font-weight: 600;
+        }
+        
+        .review-date {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .product-images {
+                position: static;
+            }
+            
+            .product-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .tab-buttons {
+                overflow-x: auto;
+            }
+            
+            .ingredients-list {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="brand-name">VINUS</span>
+                        <span class="brand-tagline">Beauty</span>
+                    </div>
+                </div>
+                <nav class="nav-menu">
+                    <ul>
+                        <li><a href="index.html#NEW" class="nav-link">NEW</a></li>
+                        <li><a href="index.html#products" class="nav-link">FRAGRANCE</a></li>
+                        <li><a href="index.html#products" class="nav-link">NAILS</a></li>
+                        <li><a href="index.html#products" class="nav-link">LIPS</a></li>
+                        <li><a href="index.html#products" class="nav-link">EYES</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="nav-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search products..." id="searchInput">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="user-account">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="cart-icon" id="cartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail">
+        <div class="product-detail-container">
+            <!-- Product Images -->
+            <div class="product-images">
+                <img src="https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Product Main Image" class="main-image" id="mainImage">
+                <div class="thumbnail-images">
+                    <img src="https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Product Thumbnail 1" class="thumbnail active" onclick="changeMainImage(this.src)">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Product Thumbnail 2" class="thumbnail" onclick="changeMainImage(this.src)">
+                    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Product Thumbnail 3" class="thumbnail" onclick="changeMainImage(this.src)">
+                    <img src="https://images.unsplash.com/photo-1631214540242-3cd503c5e1b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Product Thumbnail 4" class="thumbnail" onclick="changeMainImage(this.src)">
+                </div>
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-info">
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a> / <a href="index.html#products">Products</a> / VINUS Beauty Tip Tac Toe Nail Lacquer Classic
+                </div>
+
+                <h1 class="product-title">VINUS Beauty Tip Tac Toe Nail Lacquer Classic</h1>
+                
+                <div class="product-price">$45.00</div>
+                
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="rating-text">(127 reviews)</span>
+                </div>
+
+                <div class="product-description">
+                    <p>Experience the perfect blend of luxury and performance with our premium nail lacquer. This long-lasting formula provides vibrant color and a glossy finish that lasts for days. Enriched with nourishing ingredients to keep your nails healthy and strong.</p>
+                </div>
+
+                <div class="product-options">
+                    <div class="option-group">
+                        <label class="option-label">Color:</label>
+                        <div class="color-options">
+                            <div class="color-option active" style="background-color: #ff6b9d;" onclick="selectColor(this)"></div>
+                            <div class="color-option" style="background-color: #c44569;" onclick="selectColor(this)"></div>
+                            <div class="color-option" style="background-color: #f8b500;" onclick="selectColor(this)"></div>
+                            <div class="color-option" style="background-color: #6c5ce7;" onclick="selectColor(this)"></div>
+                            <div class="color-option" style="background-color: #00cec9;" onclick="selectColor(this)"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quantity-selector">
+                    <label class="option-label">Quantity:</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                        <input type="number" value="1" min="1" max="10" class="quantity-input" id="quantity">
+                        <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="add-to-cart" onclick="addToCart()">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <button class="wishlist-btn" onclick="addToWishlist()">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+
+                <div class="product-features">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Long-lasting formula</li>
+                        <li><i class="fas fa-check"></i> Chip-resistant finish</li>
+                        <li><i class="fas fa-check"></i> Quick-drying</li>
+                        <li><i class="fas fa-check"></i> Cruelty-free</li>
+                        <li><i class="fas fa-check"></i> Vegan formula</li>
+                        <li><i class="fas fa-check"></i> Professional quality</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Tabs -->
+        <div class="container">
+            <div class="tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showTab('description')">Description</button>
+                    <button class="tab-btn" onclick="showTab('ingredients')">Ingredients</button>
+                    <button class="tab-btn" onclick="showTab('reviews')">Reviews (127)</button>
+                    <button class="tab-btn" onclick="showTab('shipping')">Shipping</button>
+                </div>
+
+                <div class="tab-content active" id="description">
+                    <h3>Product Description</h3>
+                    <p>Our premium nail lacquer collection represents the pinnacle of nail care technology. Each bottle contains a carefully formulated blend of high-quality pigments and nourishing ingredients designed to deliver exceptional color payoff and longevity.</p>
+                    <p>The innovative brush design ensures smooth, even application every time, while the quick-drying formula means you can get gorgeous nails in minutes, not hours. Whether you're preparing for a special occasion or just want to add a pop of color to your everyday look, this nail lacquer delivers professional salon results at home.</p>
+                    <h4>Key Benefits:</h4>
+                    <ul>
+                        <li>Up to 7 days of chip-free wear</li>
+                        <li>Vibrant, true-to-bottle color</li>
+                        <li>Strengthens and protects nails</li>
+                        <li>Easy removal without damage</li>
+                        <li>Available in 20+ stunning shades</li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="ingredients">
+                    <h3>Ingredients</h3>
+                    <div class="ingredients-list">
+                        <p><strong>Butyl Acetate</strong> - Base solvent</p>
+                        <p><strong>Ethyl Acetate</strong> - Film former</p>
+                        <p><strong>Nitrocellulose</strong> - Primary film former</p>
+                        <p><strong>Acetyl Tributyl Citrate</strong> - Plasticizer</p>
+                        <p><strong>Isopropyl Alcohol</strong> - Solvent</p>
+                        <p><strong>Stearalkonium Bentonite</strong> - Suspending agent</p>
+                        <p><strong>Acrylates Copolymer</strong> - Film modifier</p>
+                        <p><strong>Styrene/Acrylates Copolymer</strong> - Film former</p>
+                        <p><strong>Benzophenone-1</strong> - UV filter</p>
+                        <p><strong>Silica</strong> - Texture enhancer</p>
+                        <p><strong>Trimethylpentanediyl Dibenzoate</strong> - Plasticizer</p>
+                        <p><strong>CI 77891 (Titanium Dioxide)</strong> - Colorant</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="reviews">
+                    <h3>Customer Reviews</h3>
+                    <div class="review">
+                        <div class="review-header">
+                            <span class="reviewer-name">Sarah M.</span>
+                            <span class="review-date">March 15, 2024</span>
+                        </div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Absolutely love this nail polish! The color is exactly as shown and it lasted a full week without chipping. Will definitely repurchase!"</p>
+                    </div>
+                    <div class="review">
+                        <div class="review-header">
+                            <span class="reviewer-name">Jessica L.</span>
+                            <span class="review-date">March 10, 2024</span>
+                        </div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Great quality and the brush makes application so easy. The formula is smooth and doesn't streak. Highly recommend!"</p>
+                    </div>
+                    <div class="review">
+                        <div class="review-header">
+                            <span class="reviewer-name">Emma R.</span>
+                            <span class="review-date">March 8, 2024</span>
+                        </div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <p>"Beautiful color and good staying power. Only complaint is that it takes a bit longer to dry than expected, but the final result is worth it."</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="shipping">
+                    <h3>Shipping Information</h3>
+                    <h4>Delivery Options:</h4>
+                    <ul>
+                        <li><strong>Standard Shipping (5-7 business days):</strong> Free on orders over $50</li>
+                        <li><strong>Express Shipping (2-3 business days):</strong> $9.99</li>
+                        <li><strong>Next Day Delivery:</strong> $19.99 (order by 2 PM)</li>
+                    </ul>
+                    <h4>International Shipping:</h4>
+                    <p>We ship worldwide! International shipping rates and delivery times vary by destination. All international orders are subject to customs duties and taxes.</p>
+                    <h4>Returns & Exchanges:</h4>
+                    <p>Not satisfied? Return unused products within 30 days for a full refund. Original packaging required.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-gem"></i> Vinus Beauty</h3>
+                    <p>Your trusted partner in beauty and self-expression.</p>
+                    <div class="social-links">
+                        <a href="#" title="Follow us on Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Subscribe to our YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" title="Follow us on TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" title="Follow us on Pinterest"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" title="Follow us on Snapchat"><i class="fab fa-snapchat"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#products">Products</a></li>
+                        <li><a href="#">New Arrivals</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@vinusbeauty.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Beauty Ave, NY 10001</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vinus Beauty. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Image gallery functionality
+        function changeMainImage(src) {
+            document.getElementById('mainImage').src = src;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Color selection
+        function selectColor(element) {
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+
+        // Quantity controls
+        function increaseQuantity() {
+            const input = document.getElementById('quantity');
+            const currentValue = parseInt(input.value);
+            if (currentValue < 10) {
+                input.value = currentValue + 1;
+            }
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('quantity');
+            const currentValue = parseInt(input.value);
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+            }
+        }
+
+        // Add to cart functionality
+        function addToCart() {
+            const quantity = document.getElementById('quantity').value;
+            alert(`Added ${quantity} item(s) to cart!`);
+            
+            // Update cart count (you can integrate this with your existing cart system)
+            const cartCount = document.getElementById('cartCount');
+            const currentCount = parseInt(cartCount.textContent);
+            cartCount.textContent = currentCount + parseInt(quantity);
+        }
+
+        // Add to wishlist
+        function addToWishlist() {
+            const btn = event.target.closest('.wishlist-btn');
+            const icon = btn.querySelector('i');
+            
+            if (icon.classList.contains('fas')) {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                alert('Removed from wishlist');
+            } else {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                alert('Added to wishlist!');
+            }
+        }
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
